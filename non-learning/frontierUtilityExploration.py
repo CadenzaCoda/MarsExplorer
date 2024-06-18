@@ -140,7 +140,7 @@ def play_game(env):
 if __name__ == "__main__":
     conf = get_conf()
 
-    env = gym.make('mars_explorer:exploConf-v01', conf=conf)
+    env = gym.make('mars_explorer:exploConf-v1', conf=conf)
 
     data = []
     for game in range(N_GAMES):

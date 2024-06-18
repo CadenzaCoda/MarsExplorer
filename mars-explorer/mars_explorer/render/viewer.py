@@ -7,8 +7,9 @@ import numpy as np
 
 from mars_explorer.render.sprites import *
 
+
 class Viewer():
-    def __init__(self,env, conf):
+    def __init__(self, env, conf):
         pg.init()
         self.env = env
         self.conf = conf
@@ -17,8 +18,8 @@ class Viewer():
         self.clock = pg.time.Clock()
         pg.key.set_repeat(500, 100)
 
-        self.TILESIZE = int(self.conf["width"]/self.env.sizeX)
-        self.LIGHT_RADIUS = (self.TILESIZE*2, self.TILESIZE*2)
+        self.TILESIZE = int(self.conf["width"] / self.env.sizeX)
+        self.LIGHT_RADIUS = (self.TILESIZE * 2, self.TILESIZE * 2)
         self.LIGHT_GREY = (100, 100, 100)
         self.RED = (255, 0, 0)
         self.BLUE = (0, 0, 255)
@@ -65,8 +66,8 @@ class Viewer():
 
     def render_fog_camera(self):
         # dark everywhere except where the lidar sees every time step
-        cameraX = (self.env.x+.5)*self.TILESIZE
-        cameraY = (self.env.y+.5)*self.TILESIZE
+        cameraX = (self.env.x + .5) * self.TILESIZE
+        cameraY = (self.env.y + .5) * self.TILESIZE
 
         self.fog.fill(self.conf["night_color"])
         self.light_rect.center = (cameraX, cameraY)
@@ -85,9 +86,9 @@ class Viewer():
 
         self.fog.fill(self.conf["night_color"])
 
-        for x,y in explored_idx:
-            cameraX = (x+.5)*self.TILESIZE
-            cameraY = (y+.5)*self.TILESIZE
+        for x, y in explored_idx:
+            cameraX = (x + .5) * self.TILESIZE
+            cameraY = (y + .5) * self.TILESIZE
 
             self.light_rect.center = (cameraX, cameraY)
 
@@ -96,13 +97,13 @@ class Viewer():
 
     def draw_lidar_rays(self):
         thetas, ranges = self.env.ldr.thetas, self.env.ldr.ranges
-        currentX = self.env.x*self.TILESIZE+0.5*self.TILESIZE
-        currentY = self.env.y*self.TILESIZE+0.5*self.TILESIZE
-        xObs = (currentX + self.TILESIZE*ranges*np.cos(thetas)).astype(float)
-        yObs = (currentY + self.TILESIZE*ranges*np.sin(thetas)).astype(float)
-        for x,y in zip(xObs, yObs):
+        currentX = self.env.x * self.TILESIZE + 0.5 * self.TILESIZE
+        currentY = self.env.y * self.TILESIZE + 0.5 * self.TILESIZE
+        xObs = (currentX + self.TILESIZE * ranges * np.cos(thetas)).astype(float)
+        yObs = (currentY + self.TILESIZE * ranges * np.sin(thetas)).astype(float)
+        for x, y in zip(xObs, yObs):
             pg.draw.line(self.screen, self.RED, (currentX, currentY), (x, y))
-            pg.draw.circle(self.screen, self.RED, (x, y), self.TILESIZE/8)
+            pg.draw.circle(self.screen, self.RED, (x, y), self.TILESIZE / 8)
 
     def draw_grid(self):
         for x in range(0, self.conf["width"], self.TILESIZE):
@@ -112,13 +113,12 @@ class Viewer():
 
     def draw_traceline(self):
 
-        if self.env.timeStep>2:
-            for step in range(len(self.env.drone_trajectory)-1):
-
-                currentX = self.env.drone_trajectory[-1-step][0]*self.TILESIZE+0.5*self.TILESIZE
-                currentY = self.env.drone_trajectory[-1-step][1]*self.TILESIZE+0.5*self.TILESIZE
-                prevX = self.env.drone_trajectory[-2-step][0]*self.TILESIZE+0.5*self.TILESIZE
-                prevY = self.env.drone_trajectory[-2-step][1]*self.TILESIZE+0.5*self.TILESIZE
+        if self.env.timeStep > 2:
+            for step in range(len(self.env.drone_trajectory) - 1):
+                currentX = self.env.drone_trajectory[-1 - step][0] * self.TILESIZE + 0.5 * self.TILESIZE
+                currentY = self.env.drone_trajectory[-1 - step][1] * self.TILESIZE + 0.5 * self.TILESIZE
+                prevX = self.env.drone_trajectory[-2 - step][0] * self.TILESIZE + 0.5 * self.TILESIZE
+                prevY = self.env.drone_trajectory[-2 - step][1] * self.TILESIZE + 0.5 * self.TILESIZE
 
                 pg.draw.line(self.screen, self.BLUE, (currentX, currentY),
                              (prevX, prevY))

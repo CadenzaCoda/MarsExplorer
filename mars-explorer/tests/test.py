@@ -46,7 +46,7 @@ if __name__ == "__main__":
     args = getArgs()
     conf = get_conf()
 
-    env = gym.make('mars_explorer:exploConf-v01', conf=conf)
+    env = gym.make('mars_explorer:exploConf-v1', conf=conf)
     observation = env.reset()
     for _ in range(20):
         env.render()
